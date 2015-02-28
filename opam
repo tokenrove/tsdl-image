@@ -1,0 +1,15 @@
+opam-version: "1"
+maintainer: "Julian Squires <julian@cipht.net>"
+homepage: "http://github.com/tokenrove/tsdl-image"
+authors: ["Julian Squires <julian@cipht.net>"]
+tags: [ "bindings" "graphics" ]
+license: "BSD3"
+depends: [ "ctypes" "tsdl" ]
+build:
+[
+  [ "oasis" "setup" ]
+  [ "ocaml" "setup.ml" "-configure" ]
+  [ "ocaml" "setup.ml" "-build" ]
+  [ "ocaml" "setup.ml" "-install" ]
+]
+remove: [["ocamlfind" "remove" "tsdl_image"]]
