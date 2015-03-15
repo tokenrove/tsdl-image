@@ -26,65 +26,82 @@ let init =
 let quit =
   foreign "IMG_Quit" (void @-> returning void)
 
+let surface =
+  view ~read:Sdl.unsafe_surface_of_ptr ~write:Sdl.unsafe_ptr_of_surface nativeint
+let surface_opt =
+  let read v = if Nativeint.(compare v zero) = 0 then None else Some (Sdl.unsafe_surface_of_ptr v) in
+  let write = function | None -> raw_address_of_ptr @@ null | Some s -> Sdl.unsafe_ptr_of_surface s in
+  view ~read ~write nativeint
+
+let texture_opt =
+  let read v = if Nativeint.(compare v zero) = 0 then None else Some (Sdl.unsafe_texture_of_ptr v) in
+  let write = function | None -> raw_address_of_ptr @@ null | Some s -> Sdl.unsafe_ptr_of_texture s in
+  view ~read ~write nativeint
+
+let rw_ops =
+  view ~read:Sdl.unsafe_rw_ops_of_ptr ~write:Sdl.unsafe_ptr_of_rw_ops nativeint
+let renderer =
+  view ~read:Sdl.unsafe_renderer_of_ptr ~write:Sdl.unsafe_ptr_of_renderer nativeint
+
 let load =
-  foreign "IMG_Load" (string @-> returning Sdl.surface_opt)
+  foreign "IMG_Load" (string @-> returning surface_opt)
 
 let load_rw =
-  foreign "IMG_Load_RW" (Sdl.rw_ops @-> int @-> returning Sdl.surface_opt)
+  foreign "IMG_Load_RW" (rw_ops @-> int @-> returning surface_opt)
 
 let load_typed_rw =
   foreign "IMG_LoadTyped_RW"
-    (Sdl.rw_ops @-> int @-> string @-> returning Sdl.surface_opt)
+    (rw_ops @-> int @-> string @-> returning surface_opt)
 
 let load_texture =
   foreign "IMG_LoadTexture"
-    (Sdl.renderer @-> string @-> returning Sdl.texture_opt)
+    (renderer @-> string @-> returning texture_opt)
 
 let load_texture_rw =
   foreign "IMG_LoadTexture_RW"
-    (Sdl.renderer @-> Sdl.rw_ops @-> int @-> returning Sdl.texture_opt)
+    (renderer @-> rw_ops @-> int @-> returning texture_opt)
 
 let load_texture_typed_rw =
   foreign "IMG_LoadTextureTyped_RW"
-    (Sdl.renderer @-> Sdl.rw_ops @-> int @-> string @-> returning Sdl.texture_opt)
+    (renderer @-> rw_ops @-> int @-> string @-> returning texture_opt)
 
-let is_ico = foreign "IMG_isICO" (Sdl.rw_ops @-> returning bool)
-let is_cur = foreign "IMG_isCUR" (Sdl.rw_ops @-> returning bool)
-let is_bmp = foreign "IMG_isBMP" (Sdl.rw_ops @-> returning bool)
-let is_gif = foreign "IMG_isGIF" (Sdl.rw_ops @-> returning bool)
-let is_jpg = foreign "IMG_isJPG" (Sdl.rw_ops @-> returning bool)
-let is_lbm = foreign "IMG_isLBM" (Sdl.rw_ops @-> returning bool)
-let is_pcx = foreign "IMG_isPCX" (Sdl.rw_ops @-> returning bool)
-let is_png = foreign "IMG_isPNG" (Sdl.rw_ops @-> returning bool)
-let is_pnm = foreign "IMG_isPNM" (Sdl.rw_ops @-> returning bool)
-let is_tif = foreign "IMG_isTIF" (Sdl.rw_ops @-> returning bool)
-let is_xcf = foreign "IMG_isXCF" (Sdl.rw_ops @-> returning bool)
-let is_xpm = foreign "IMG_isXPM" (Sdl.rw_ops @-> returning bool)
-let is_xv = foreign "IMG_isXV" (Sdl.rw_ops @-> returning bool)
-let is_webp = foreign "IMG_isWEBP" (Sdl.rw_ops @-> returning bool)
+let is_ico = foreign "IMG_isICO" (rw_ops @-> returning bool)
+let is_cur = foreign "IMG_isCUR" (rw_ops @-> returning bool)
+let is_bmp = foreign "IMG_isBMP" (rw_ops @-> returning bool)
+let is_gif = foreign "IMG_isGIF" (rw_ops @-> returning bool)
+let is_jpg = foreign "IMG_isJPG" (rw_ops @-> returning bool)
+let is_lbm = foreign "IMG_isLBM" (rw_ops @-> returning bool)
+let is_pcx = foreign "IMG_isPCX" (rw_ops @-> returning bool)
+let is_png = foreign "IMG_isPNG" (rw_ops @-> returning bool)
+let is_pnm = foreign "IMG_isPNM" (rw_ops @-> returning bool)
+let is_tif = foreign "IMG_isTIF" (rw_ops @-> returning bool)
+let is_xcf = foreign "IMG_isXCF" (rw_ops @-> returning bool)
+let is_xpm = foreign "IMG_isXPM" (rw_ops @-> returning bool)
+let is_xv = foreign "IMG_isXV" (rw_ops @-> returning bool)
+let is_webp = foreign "IMG_isWEBP" (rw_ops @-> returning bool)
 
-let load_ico_rw = foreign "IMG_LoadICO_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_cur_rw = foreign "IMG_LoadCUR_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_bmp_rw = foreign "IMG_LoadBMP_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_gif_rw = foreign "IMG_LoadGIF_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_jpg_rw = foreign "IMG_LoadJPG_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_lbm_rw = foreign "IMG_LoadLBM_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_pcx_rw = foreign "IMG_LoadPCX_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_png_rw = foreign "IMG_LoadPNG_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_pnm_rw = foreign "IMG_LoadPNM_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_tga_rw = foreign "IMG_LoadTGA_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_tif_rw = foreign "IMG_LoadTIF_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_xcf_rw = foreign "IMG_LoadXCF_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_xpm_rw = foreign "IMG_LoadXPM_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_xv_rw = foreign "IMG_LoadXV_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
-let load_webp_rw = foreign "IMG_LoadWEBP_RW" (Sdl.rw_ops @-> returning Sdl.surface_opt)
+let load_ico_rw = foreign "IMG_LoadICO_RW" (rw_ops @-> returning surface_opt)
+let load_cur_rw = foreign "IMG_LoadCUR_RW" (rw_ops @-> returning surface_opt)
+let load_bmp_rw = foreign "IMG_LoadBMP_RW" (rw_ops @-> returning surface_opt)
+let load_gif_rw = foreign "IMG_LoadGIF_RW" (rw_ops @-> returning surface_opt)
+let load_jpg_rw = foreign "IMG_LoadJPG_RW" (rw_ops @-> returning surface_opt)
+let load_lbm_rw = foreign "IMG_LoadLBM_RW" (rw_ops @-> returning surface_opt)
+let load_pcx_rw = foreign "IMG_LoadPCX_RW" (rw_ops @-> returning surface_opt)
+let load_png_rw = foreign "IMG_LoadPNG_RW" (rw_ops @-> returning surface_opt)
+let load_pnm_rw = foreign "IMG_LoadPNM_RW" (rw_ops @-> returning surface_opt)
+let load_tga_rw = foreign "IMG_LoadTGA_RW" (rw_ops @-> returning surface_opt)
+let load_tif_rw = foreign "IMG_LoadTIF_RW" (rw_ops @-> returning surface_opt)
+let load_xcf_rw = foreign "IMG_LoadXCF_RW" (rw_ops @-> returning surface_opt)
+let load_xpm_rw = foreign "IMG_LoadXPM_RW" (rw_ops @-> returning surface_opt)
+let load_xv_rw = foreign "IMG_LoadXV_RW" (rw_ops @-> returning surface_opt)
+let load_webp_rw = foreign "IMG_LoadWEBP_RW" (rw_ops @-> returning surface_opt)
 
 let read_xpm_from_array =
-  foreign "IMG_ReadXPMFromArray" (ptr string @-> returning Sdl.surface_opt)
+  foreign "IMG_ReadXPMFromArray" (ptr string @-> returning surface_opt)
 
 let save_png =
-  foreign "IMG_SavePNG" (Sdl.surface @-> string @-> returning int)
+  foreign "IMG_SavePNG" (surface @-> string @-> returning int)
 let save_png_rw =
-  foreign "IMG_SavePNG" (Sdl.surface @-> Sdl.rw_ops @-> int @-> returning int)
+  foreign "IMG_SavePNG" (surface @-> rw_ops @-> int @-> returning int)
 
 end
