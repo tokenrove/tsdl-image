@@ -47,11 +47,11 @@ let load =
   foreign "IMG_Load" (string @-> returning surface_opt)
 
 let load_rw =
-  foreign "IMG_Load_RW" (rw_ops @-> int @-> returning surface_opt)
+  foreign "IMG_Load_RW" (rw_ops @-> bool @-> returning surface_opt)
 
 let load_typed_rw =
   foreign "IMG_LoadTyped_RW"
-    (rw_ops @-> int @-> string @-> returning surface_opt)
+    (rw_ops @-> bool @-> string @-> returning surface_opt)
 
 let load_texture =
   foreign "IMG_LoadTexture"
@@ -59,11 +59,11 @@ let load_texture =
 
 let load_texture_rw =
   foreign "IMG_LoadTexture_RW"
-    (renderer @-> rw_ops @-> int @-> returning texture_opt)
+    (renderer @-> rw_ops @-> bool @-> returning texture_opt)
 
 let load_texture_typed_rw =
   foreign "IMG_LoadTextureTyped_RW"
-    (renderer @-> rw_ops @-> int @-> string @-> returning texture_opt)
+    (renderer @-> rw_ops @-> bool @-> string @-> returning texture_opt)
 
 let is_ico = foreign "IMG_isICO" (rw_ops @-> returning bool)
 let is_cur = foreign "IMG_isCUR" (rw_ops @-> returning bool)
@@ -102,6 +102,6 @@ let read_xpm_from_array =
 let save_png =
   foreign "IMG_SavePNG" (surface @-> string @-> returning int)
 let save_png_rw =
-  foreign "IMG_SavePNG" (surface @-> rw_ops @-> int @-> returning int)
+  foreign "IMG_SavePNG_RW" (surface @-> rw_ops @-> bool @-> returning int)
 
 end
