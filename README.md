@@ -1,7 +1,7 @@
-`Tsdl_image` — Thin bindings to `SDL2_Image` for OCaml and `Tsdl`
------------------------------------------------------------------
+Tsdl\_image — SDL2\_Image bindings for OCaml with Tsdl
+------------------------------------------------------
 
-`Tsdl_image` provides bindings to
+Tsdl\_image provides bindings to
 [SDL2_Image](https://www.libsdl.org/projects/SDL_image/) intended to
 be used with [Tsdl](http://erratique.ch/software/tsdl).
 
@@ -17,7 +17,7 @@ or by emailing Julian Squires <[julian@cipht.net](mailto:julian@cipht.net)>.
 
 Via [opam](https://opam.ocaml.org/):
 
-  opam install tsdl-image
+    opam install tsdl-image
 
 ## Documentation
 
