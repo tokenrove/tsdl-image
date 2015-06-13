@@ -49,9 +49,17 @@ let load =
 let load_rw =
   foreign "IMG_Load_RW" (rw_ops @-> bool @-> returning surface_opt)
 
+type format = Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf | Xpm | Xv | Webp
+let string_of_format = function
+  | Ico -> "ICO" | Cur -> "CUR" | Bmp -> "BMP" | Gif -> "GIF"
+  | Jpg -> "JPG" | Lbm -> "LBM" | Pcx -> "PCX" | Png -> "PNG"
+  | Pnm -> "PNM" | Tif -> "TIF" | Xcf -> "XCF" | Xpm -> "XPM"
+  | Xv -> "XV" | Webp -> "WEBP"
+
 let load_typed_rw =
   foreign "IMG_LoadTyped_RW"
-    (rw_ops @-> bool @-> string @-> returning surface_opt)
+          (rw_ops @-> bool @-> string @-> returning surface_opt)
+let load_typed_rw r b f = load_typed_rw r b (string_of_format f)
 
 let load_texture =
   foreign "IMG_LoadTexture"
@@ -63,7 +71,9 @@ let load_texture_rw =
 
 let load_texture_typed_rw =
   foreign "IMG_LoadTextureTyped_RW"
-    (renderer @-> rw_ops @-> bool @-> string @-> returning texture_opt)
+          (renderer @-> rw_ops @-> bool @-> string @-> returning texture_opt)
+let load_texture_typed_rw r o b f =
+  load_texture_typed_rw r o b (string_of_format f)
 
 let is_ico = foreign "IMG_isICO" (rw_ops @-> returning bool)
 let is_cur = foreign "IMG_isCUR" (rw_ops @-> returning bool)
@@ -79,6 +89,11 @@ let is_xcf = foreign "IMG_isXCF" (rw_ops @-> returning bool)
 let is_xpm = foreign "IMG_isXPM" (rw_ops @-> returning bool)
 let is_xv = foreign "IMG_isXV" (rw_ops @-> returning bool)
 let is_webp = foreign "IMG_isWEBP" (rw_ops @-> returning bool)
+let is_format fmt = match fmt with
+  | Ico -> is_ico | Cur -> is_cur | Bmp -> is_bmp | Gif -> is_gif
+  | Jpg -> is_jpg | Lbm -> is_lbm | Pcx -> is_pcx | Png -> is_png
+  | Pnm -> is_pnm | Tif -> is_tif | Xcf -> is_xcf | Xpm -> is_xpm
+  | Xv -> is_xv | Webp -> is_webp
 
 let load_ico_rw = foreign "IMG_LoadICO_RW" (rw_ops @-> returning surface_opt)
 let load_cur_rw = foreign "IMG_LoadCUR_RW" (rw_ops @-> returning surface_opt)
@@ -95,9 +110,14 @@ let load_xcf_rw = foreign "IMG_LoadXCF_RW" (rw_ops @-> returning surface_opt)
 let load_xpm_rw = foreign "IMG_LoadXPM_RW" (rw_ops @-> returning surface_opt)
 let load_xv_rw = foreign "IMG_LoadXV_RW" (rw_ops @-> returning surface_opt)
 let load_webp_rw = foreign "IMG_LoadWEBP_RW" (rw_ops @-> returning surface_opt)
+let load_format_rw = function
+  | Ico -> load_ico_rw | Cur -> load_cur_rw | Bmp -> load_bmp_rw | Gif -> load_gif_rw
+  | Jpg -> load_jpg_rw | Lbm -> load_lbm_rw | Pcx -> load_pcx_rw | Png -> load_png_rw
+  | Pnm -> load_pnm_rw | Tif -> load_tif_rw | Xcf -> load_xcf_rw | Xpm -> load_xpm_rw
+  | Xv -> load_xv_rw | Webp -> load_webp_rw
 
 let read_xpm_from_array =
-  foreign "IMG_ReadXPMFromArray" (ptr string @-> returning surface_opt)
+  foreign "IMG_ReadXPMFromArray" (string @-> returning surface_opt)
 
 let save_png =
   foreign "IMG_SavePNG" (surface @-> string @-> returning int)

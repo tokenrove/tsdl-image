@@ -14,12 +14,12 @@ let () =
   assert ((Sdl.get_surface_size sface) = (64,64));
   assert ((Image.save_png sface "output.png") = 0);
   Sdl.rw_from_file "what.png" "rb" >>= fun f ->
-  assert (false = Image.is_ico f);
-  assert (false = Image.is_bmp f);
-  assert (false = Image.is_gif f);
-  assert (false = Image.is_pcx f);
-  assert (false = Image.is_jpg f);
-  assert (Image.is_png f);
+  assert (false = Image.is_format Image.Ico f);
+  assert (false = Image.is_format Image.Bmp f);
+  assert (false = Image.is_format Image.Gif f);
+  assert (false = Image.is_format Image.Pcx f);
+  assert (false = Image.is_format Image.Jpg f);
+  assert (Image.is_format Image.Png f);
   Sdl.rw_close f |> ignore;
   Image.quit ();
   Sdl.quit ();
