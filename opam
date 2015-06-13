@@ -1,15 +1,20 @@
 opam-version: "1"
+name: "tsdl-image"
+version: "0.1"
 maintainer: "Julian Squires <julian@cipht.net>"
-homepage: "http://github.com/tokenrove/tsdl-image"
 authors: ["Julian Squires <julian@cipht.net>"]
+homepage: "http://github.com/tokenrove/tsdl-image"
+dev-repo: "https://github.com/tokenrove/tsdl-image.git"
+bug-reports: "http://github.com/tokenrove/tsdl-image/issues"
 tags: [ "bindings" "graphics" ]
 license: "BSD3"
-depends: [ "ctypes" "tsdl" ]
+depends: [ "ctypes" {>= "0.4.0"} "ctypes-foreign" "tsdl" {> "0.8.1" }
+           "oasis" {build} ]
 build:
 [
   [ "oasis" "setup" ]
   [ "ocaml" "setup.ml" "-configure" ]
   [ "ocaml" "setup.ml" "-build" ]
-  [ "ocaml" "setup.ml" "-install" ]
 ]
+install: [[ "ocaml" "setup.ml" "-install" ]]
 remove: [["ocamlfind" "remove" "tsdl_image"]]
