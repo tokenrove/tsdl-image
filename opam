@@ -10,6 +10,11 @@ tags: [ "bindings" "graphics" ]
 license: "BSD3"
 depends: [ "ctypes" {>= "0.4.0"} "ctypes-foreign" "tsdl" {> "0.8.1" }
            "oasis" {build} ]
+depexts: [
+  [["debian"] ["libsdl2-image-dev"]]
+  [["ubuntu"] ["libsdl2-image-dev"]]
+  [["osx" "homebrew"] ["sdl2_image"]]
+]
 build:
 [
   [ "oasis" "setup" ]
