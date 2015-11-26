@@ -1,0 +1,12 @@
+language: c
+sudo: required
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then yes | sudo add-apt-repository ppa:zoogie/sdl2-snapshots && sudo apt-get update -qq && sudo apt-get -qq -yy install libsdl2-image-dev; fi
+install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
+script: bash -ex .travis-opam.sh
+env:
+  - OCAML_VERSION=4.01
+  - OCAML_VERSION=4.02
+os:
+  - linux
+  - osx
