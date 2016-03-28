@@ -3,3 +3,4 @@ S test
 B _build/**
 PKG tsdl
 PKG ctypes
+PKG result
