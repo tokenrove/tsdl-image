@@ -19,7 +19,7 @@ Executable "test"
   Install:      false
   Path:         test
   BuildTools:   ocamlbuild
-  BuildDepends: tsdl, tsdl_image
+  BuildDepends: tsdl, tsdl_image, result
   MainIs:       test.ml
 
 Test test
