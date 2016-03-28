@@ -1,10 +1,11 @@
 
 open Tsdl
 open Tsdl_image
+open Result
 
 let (>>=) o f =
-  match o with | `Error e -> failwith (Printf.sprintf "Error %s" e)
-               | `Ok a -> f a
+  match o with | Error (`Msg e) -> failwith (Printf.sprintf "Error %s" e)
+               | Ok a -> f a
 
 let () =
   ignore (Sdl.init Sdl.Init.everything);
