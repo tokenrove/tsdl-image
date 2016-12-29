@@ -10,7 +10,7 @@ Plugins:     META (0.4)
 Library "tsdl_image"
   Path:         src
   Modules:      Tsdl_image
-  BuildDepends: ctypes, tsdl
+  BuildDepends: ctypes, tsdl, result
   BuildTools:   ocamlbuild
   CCLib:        -lSDL2_image
   XMETAEnable:  true
