@@ -1,8 +1,13 @@
 open Ctypes
 open Foreign
 open Tsdl
+open Result
 
 module Image = struct
+
+type 'a result = 'a Sdl.result
+
+let error () = Error (`Msg (Sdl.get_error ()))
 
 let bool =
   view ~read:((<>)0) ~write:(fun b -> compare b false) int
@@ -27,15 +32,31 @@ let quit =
   foreign "IMG_Quit" (void @-> returning void)
 
 let surface =
-  view ~read:Sdl.unsafe_surface_of_ptr ~write:Sdl.unsafe_ptr_of_surface nativeint
-let surface_opt =
-  let read v = if Nativeint.(compare v zero) = 0 then None else Some (Sdl.unsafe_surface_of_ptr v) in
-  let write = function | None -> raw_address_of_ptr @@ null | Some s -> Sdl.unsafe_ptr_of_surface s in
+  view
+    ~read:Sdl.unsafe_surface_of_ptr
+    ~write:Sdl.unsafe_ptr_of_surface
+    nativeint
+
+let texture_result =
+  let read v =
+    if Nativeint.(compare v zero) = 0
+    then error ()
+    else Ok (Sdl.unsafe_texture_of_ptr v)
+  and write = function
+    | Ok v -> Sdl.unsafe_ptr_of_texture v
+    | Error e -> raw_address_of_ptr null
+  in
   view ~read ~write nativeint
 
-let texture_opt =
-  let read v = if Nativeint.(compare v zero) = 0 then None else Some (Sdl.unsafe_texture_of_ptr v) in
-  let write = function | None -> raw_address_of_ptr @@ null | Some s -> Sdl.unsafe_ptr_of_texture s in
+let surface_result =
+  let read v =
+    if Nativeint.(compare v zero) = 0
+    then error ()
+    else Ok (Sdl.unsafe_surface_of_ptr v)
+  and write = function
+    | Ok v -> Sdl.unsafe_ptr_of_surface v
+    | Error e -> raw_address_of_ptr null
+  in
   view ~read ~write nativeint
 
 let rw_ops =
@@ -44,10 +65,10 @@ let renderer =
   view ~read:Sdl.unsafe_renderer_of_ptr ~write:Sdl.unsafe_ptr_of_renderer nativeint
 
 let load =
-  foreign "IMG_Load" (string @-> returning surface_opt)
+  foreign "IMG_Load" (string @-> returning surface_result)
 
 let load_rw =
-  foreign "IMG_Load_RW" (rw_ops @-> bool @-> returning surface_opt)
+  foreign "IMG_Load_RW" (rw_ops @-> bool @-> returning surface_result)
 
 type format = Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf | Xpm | Xv | Webp
 let string_of_format = function
@@ -58,20 +79,20 @@ let string_of_format = function
 
 let load_typed_rw =
   foreign "IMG_LoadTyped_RW"
-          (rw_ops @-> bool @-> string @-> returning surface_opt)
+          (rw_ops @-> bool @-> string @-> returning surface_result)
 let load_typed_rw r b f = load_typed_rw r b (string_of_format f)
 
 let load_texture =
   foreign "IMG_LoadTexture"
-    (renderer @-> string @-> returning texture_opt)
+    (renderer @-> string @-> returning texture_result)
 
 let load_texture_rw =
   foreign "IMG_LoadTexture_RW"
-    (renderer @-> rw_ops @-> bool @-> returning texture_opt)
+    (renderer @-> rw_ops @-> bool @-> returning texture_result)
 
 let load_texture_typed_rw =
   foreign "IMG_LoadTextureTyped_RW"
-          (renderer @-> rw_ops @-> bool @-> string @-> returning texture_opt)
+          (renderer @-> rw_ops @-> bool @-> string @-> returning texture_result)
 let load_texture_typed_rw r o b f =
   load_texture_typed_rw r o b (string_of_format f)
 
@@ -95,21 +116,21 @@ let is_format fmt = match fmt with
   | Pnm -> is_pnm | Tif -> is_tif | Xcf -> is_xcf | Xpm -> is_xpm
   | Xv -> is_xv | Webp -> is_webp
 
-let load_ico_rw = foreign "IMG_LoadICO_RW" (rw_ops @-> returning surface_opt)
-let load_cur_rw = foreign "IMG_LoadCUR_RW" (rw_ops @-> returning surface_opt)
-let load_bmp_rw = foreign "IMG_LoadBMP_RW" (rw_ops @-> returning surface_opt)
-let load_gif_rw = foreign "IMG_LoadGIF_RW" (rw_ops @-> returning surface_opt)
-let load_jpg_rw = foreign "IMG_LoadJPG_RW" (rw_ops @-> returning surface_opt)
-let load_lbm_rw = foreign "IMG_LoadLBM_RW" (rw_ops @-> returning surface_opt)
-let load_pcx_rw = foreign "IMG_LoadPCX_RW" (rw_ops @-> returning surface_opt)
-let load_png_rw = foreign "IMG_LoadPNG_RW" (rw_ops @-> returning surface_opt)
-let load_pnm_rw = foreign "IMG_LoadPNM_RW" (rw_ops @-> returning surface_opt)
-let load_tga_rw = foreign "IMG_LoadTGA_RW" (rw_ops @-> returning surface_opt)
-let load_tif_rw = foreign "IMG_LoadTIF_RW" (rw_ops @-> returning surface_opt)
-let load_xcf_rw = foreign "IMG_LoadXCF_RW" (rw_ops @-> returning surface_opt)
-let load_xpm_rw = foreign "IMG_LoadXPM_RW" (rw_ops @-> returning surface_opt)
-let load_xv_rw = foreign "IMG_LoadXV_RW" (rw_ops @-> returning surface_opt)
-let load_webp_rw = foreign "IMG_LoadWEBP_RW" (rw_ops @-> returning surface_opt)
+let load_ico_rw = foreign "IMG_LoadICO_RW" (rw_ops @-> returning surface_result)
+let load_cur_rw = foreign "IMG_LoadCUR_RW" (rw_ops @-> returning surface_result)
+let load_bmp_rw = foreign "IMG_LoadBMP_RW" (rw_ops @-> returning surface_result)
+let load_gif_rw = foreign "IMG_LoadGIF_RW" (rw_ops @-> returning surface_result)
+let load_jpg_rw = foreign "IMG_LoadJPG_RW" (rw_ops @-> returning surface_result)
+let load_lbm_rw = foreign "IMG_LoadLBM_RW" (rw_ops @-> returning surface_result)
+let load_pcx_rw = foreign "IMG_LoadPCX_RW" (rw_ops @-> returning surface_result)
+let load_png_rw = foreign "IMG_LoadPNG_RW" (rw_ops @-> returning surface_result)
+let load_pnm_rw = foreign "IMG_LoadPNM_RW" (rw_ops @-> returning surface_result)
+let load_tga_rw = foreign "IMG_LoadTGA_RW" (rw_ops @-> returning surface_result)
+let load_tif_rw = foreign "IMG_LoadTIF_RW" (rw_ops @-> returning surface_result)
+let load_xcf_rw = foreign "IMG_LoadXCF_RW" (rw_ops @-> returning surface_result)
+let load_xpm_rw = foreign "IMG_LoadXPM_RW" (rw_ops @-> returning surface_result)
+let load_xv_rw = foreign "IMG_LoadXV_RW" (rw_ops @-> returning surface_result)
+let load_webp_rw = foreign "IMG_LoadWEBP_RW" (rw_ops @-> returning surface_result)
 let load_format_rw = function
   | Ico -> load_ico_rw | Cur -> load_cur_rw | Bmp -> load_bmp_rw | Gif -> load_gif_rw
   | Jpg -> load_jpg_rw | Lbm -> load_lbm_rw | Pcx -> load_pcx_rw | Png -> load_png_rw
@@ -117,7 +138,7 @@ let load_format_rw = function
   | Xv -> load_xv_rw | Webp -> load_webp_rw
 
 let read_xpm_from_array =
-  foreign "IMG_ReadXPMFromArray" (string @-> returning surface_opt)
+  foreign "IMG_ReadXPMFromArray" (string @-> returning surface_result)
 
 let save_png =
   foreign "IMG_SavePNG" (surface @-> string @-> returning int)

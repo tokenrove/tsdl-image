@@ -6,6 +6,8 @@
 
 module Image : sig
 
+type 'a result = 'a Tsdl.Sdl.result
+
 (** {1 Initialization} *)
 
 module Init : sig
@@ -31,22 +33,22 @@ type format =
 
 (** {1 Loading} *)
 
-val load : string -> Tsdl.Sdl.surface option
+val load : string -> Tsdl.Sdl.surface result
 (** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_11.html#SEC11}IMG_Load} *)
 
-val load_rw : Tsdl.Sdl.rw_ops -> bool -> Tsdl.Sdl.surface option
+val load_rw : Tsdl.Sdl.rw_ops -> bool -> Tsdl.Sdl.surface result
 (** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_12.html#SEC12}IMG_Load_RW} *)
 
-val load_typed_rw : Tsdl.Sdl.rw_ops -> bool -> format -> Tsdl.Sdl.surface option
+val load_typed_rw : Tsdl.Sdl.rw_ops -> bool -> format -> Tsdl.Sdl.surface result
 (** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_13.html#SEC13}IMG_LoadTyped_RW} *)
 
-val load_texture : Tsdl.Sdl.renderer -> string -> Tsdl.Sdl.texture option
-val load_texture_rw : Tsdl.Sdl.renderer -> Tsdl.Sdl.rw_ops -> bool -> Tsdl.Sdl.texture option
-val load_texture_typed_rw : Tsdl.Sdl.renderer -> Tsdl.Sdl.rw_ops -> bool -> format -> Tsdl.Sdl.texture option
+val load_texture : Tsdl.Sdl.renderer -> string -> Tsdl.Sdl.texture result
+val load_texture_rw : Tsdl.Sdl.renderer -> Tsdl.Sdl.rw_ops -> bool -> Tsdl.Sdl.texture result
+val load_texture_typed_rw : Tsdl.Sdl.renderer -> Tsdl.Sdl.rw_ops -> bool -> format -> Tsdl.Sdl.texture result
 
-val load_format_rw : format -> Tsdl.Sdl.rw_ops -> Tsdl.Sdl.surface option
+val load_format_rw : format -> Tsdl.Sdl.rw_ops -> Tsdl.Sdl.surface result
 
-val read_xpm_from_array : string -> Tsdl.Sdl.surface option
+val read_xpm_from_array : string -> Tsdl.Sdl.surface result
 (** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_28.html#SEC28}IMG_ReadXPMFromArray} *)
 
 (** {1 Saving} *)
