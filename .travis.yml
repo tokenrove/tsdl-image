@@ -2,11 +2,17 @@ language: c
 sudo: required
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then yes | sudo add-apt-repository ppa:zoogie/sdl2-snapshots && sudo apt-get update -qq && sudo apt-get -qq -yy install libsdl2-image-dev; fi
-install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
-script: bash -ex .travis-opam.sh
+install:
+  - wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
+  - PRE_INSTALL_HOOK='opam pin add tsdl 0.9.1' bash -ex .travis-opam.sh
+script:
+  - oasis setup
+  - ocaml setup.ml -configure --enable-tests
+  - ocaml setup.ml -all
 env:
-  - OCAML_VERSION=4.01
   - OCAML_VERSION=4.02
+  - OCAML_VERSION=4.03
+  - OCAML_VERSION=4.04
 os:
   - linux
   - osx
