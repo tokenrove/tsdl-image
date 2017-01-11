@@ -24,5 +24,10 @@ build:
   [ "ocaml" "setup.ml" "-configure" ]
   [ "ocaml" "setup.ml" "-build" ]
 ]
+build-test:
+[
+  [ "ocaml" "setup.ml" "-configure" "--enable-tests" ]
+  [ "ocaml" "setup.ml" "-test" ]
+]
 install: [[ "ocaml" "setup.ml" "-install" ]]
 remove: [["ocamlfind" "remove" "tsdl_image"]]
