@@ -1,0 +1,6 @@
+(library
+  (name tsdl_image)
+  (public_name tsdl_image)
+  (modules tsdl_image)
+  (libraries ctypes tsdl result)
+  (c_library_flags -lSDL2_image))
