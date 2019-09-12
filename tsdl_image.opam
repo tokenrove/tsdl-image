@@ -13,23 +13,19 @@ depends: [
   "ctypes-foreign"
   "tsdl" {>= "0.9.0"}
   "result"
-  "oasis" {build}
+  "dune" {build & >= "1.11.0"}
 ]
 depexts: [
   ["libsdl2-image-dev"] {os-family = "debian"}
   ["sdl2_image"] {os-distribution = "homebrew" & os = "macos"}
   ["sdl2_image"] {os-distribution = "arch"}
 ]
-build:
-[
-  [ "oasis" "setup" ]
-  [ "ocaml" "setup.ml" "-configure" ] {!with-test}
-  [ "ocaml" "setup.ml" "-configure" "--enable-tests" ] {with-test}
-  [ "ocaml" "setup.ml" "-build" ]
+build: [
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "build" "test/what.png" "test/test.exe"] {with-test}
+  ["dune" "build" "@doc" "-p" name] {with-doc}
 ]
-run-test: [ "ocaml" "setup.ml" "-test" ]
-install: [[ "ocaml" "setup.ml" "-install" ]]
-remove: [["ocamlfind" "remove" "tsdl_image"]]
+run-test: ["dune" "runtest" "-p" name]
 synopsis: "SDL2_Image bindings to go with Tsdl"
 description: """
 Tsdl_image provides bindings to SDL2_Image intended to be used with
