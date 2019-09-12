@@ -44,7 +44,7 @@ let texture_result =
     else Ok (Sdl.unsafe_texture_of_ptr v)
   and write = function
     | Ok v -> Sdl.unsafe_ptr_of_texture v
-    | Error e -> raw_address_of_ptr null
+    | Error _ -> raw_address_of_ptr null
   in
   view ~read ~write nativeint
 
@@ -55,7 +55,7 @@ let surface_result =
     else Ok (Sdl.unsafe_surface_of_ptr v)
   and write = function
     | Ok v -> Sdl.unsafe_ptr_of_surface v
-    | Error e -> raw_address_of_ptr null
+    | Error _ -> raw_address_of_ptr null
   in
   view ~read ~write nativeint
 
@@ -125,7 +125,7 @@ let load_lbm_rw = foreign "IMG_LoadLBM_RW" (rw_ops @-> returning surface_result)
 let load_pcx_rw = foreign "IMG_LoadPCX_RW" (rw_ops @-> returning surface_result)
 let load_png_rw = foreign "IMG_LoadPNG_RW" (rw_ops @-> returning surface_result)
 let load_pnm_rw = foreign "IMG_LoadPNM_RW" (rw_ops @-> returning surface_result)
-let load_tga_rw = foreign "IMG_LoadTGA_RW" (rw_ops @-> returning surface_result)
+(* let load_tga_rw = foreign "IMG_LoadTGA_RW" (rw_ops @-> returning surface_result) *)
 let load_tif_rw = foreign "IMG_LoadTIF_RW" (rw_ops @-> returning surface_result)
 let load_xcf_rw = foreign "IMG_LoadXCF_RW" (rw_ops @-> returning surface_result)
 let load_xpm_rw = foreign "IMG_LoadXPM_RW" (rw_ops @-> returning surface_result)

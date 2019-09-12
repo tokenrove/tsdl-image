@@ -17,7 +17,7 @@ or by emailing Julian Squires <[julian@cipht.net](mailto:julian@cipht.net)>.
 
 Via [opam](https://opam.ocaml.org/):
 
-    opam install tsdl-image
+    opam install tsdl_image
 
 ## Documentation
 
