@@ -44,7 +44,7 @@ let texture_result =
     else Ok (Sdl.unsafe_texture_of_ptr v)
   and write = function
     | Ok v -> Sdl.unsafe_ptr_of_texture v
-    | Error e -> raw_address_of_ptr null
+    | Error _ -> raw_address_of_ptr null
   in
   view ~read ~write nativeint
 
@@ -55,7 +55,7 @@ let surface_result =
     else Ok (Sdl.unsafe_surface_of_ptr v)
   and write = function
     | Ok v -> Sdl.unsafe_ptr_of_surface v
-    | Error e -> raw_address_of_ptr null
+    | Error _ -> raw_address_of_ptr null
   in
   view ~read ~write nativeint
 
