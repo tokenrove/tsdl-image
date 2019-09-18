@@ -1,6 +1,6 @@
 # -*- conf -*-
 OASISFormat: 0.4
-Name:        tsdl-image
+Name:        tsdl_image
 Version:     0
 Synopsis:    SDL2_image bindings to go with Tsdl
 Authors:     Julian Squires
