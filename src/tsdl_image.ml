@@ -70,12 +70,13 @@ let load =
 let load_rw =
   foreign "IMG_Load_RW" (rw_ops @-> bool @-> returning surface_result)
 
-type format = Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf | Xpm | Xv | Webp
+type format = Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf
+            | Xpm | Xv | Webp | Tga
 let string_of_format = function
   | Ico -> "ICO" | Cur -> "CUR" | Bmp -> "BMP" | Gif -> "GIF"
   | Jpg -> "JPG" | Lbm -> "LBM" | Pcx -> "PCX" | Png -> "PNG"
   | Pnm -> "PNM" | Tif -> "TIF" | Xcf -> "XCF" | Xpm -> "XPM"
-  | Xv -> "XV" | Webp -> "WEBP"
+  | Xv -> "XV" | Webp -> "WEBP" | Tga -> "TGA"
 
 let load_typed_rw =
   foreign "IMG_LoadTyped_RW"
@@ -115,6 +116,7 @@ let is_format fmt = match fmt with
   | Jpg -> is_jpg | Lbm -> is_lbm | Pcx -> is_pcx | Png -> is_png
   | Pnm -> is_pnm | Tif -> is_tif | Xcf -> is_xcf | Xpm -> is_xpm
   | Xv -> is_xv | Webp -> is_webp
+  | Tga -> failwith "TGA cannot safely be detected"
 
 let load_ico_rw = foreign "IMG_LoadICO_RW" (rw_ops @-> returning surface_result)
 let load_cur_rw = foreign "IMG_LoadCUR_RW" (rw_ops @-> returning surface_result)
@@ -135,7 +137,7 @@ let load_format_rw = function
   | Ico -> load_ico_rw | Cur -> load_cur_rw | Bmp -> load_bmp_rw | Gif -> load_gif_rw
   | Jpg -> load_jpg_rw | Lbm -> load_lbm_rw | Pcx -> load_pcx_rw | Png -> load_png_rw
   | Pnm -> load_pnm_rw | Tif -> load_tif_rw | Xcf -> load_xcf_rw | Xpm -> load_xpm_rw
-  | Xv -> load_xv_rw | Webp -> load_webp_rw
+  | Xv -> load_xv_rw | Webp -> load_webp_rw | Tga -> load_tga_rw
 
 let read_xpm_from_array =
   foreign "IMG_ReadXPMFromArray" (string @-> returning surface_result)
