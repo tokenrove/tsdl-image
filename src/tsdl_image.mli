@@ -28,8 +28,8 @@ val init : Init.t -> Init.t
 val quit : unit -> unit
 (** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_9.html#SEC9}IMG_Quit} *)
 
-type format =
-    Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf | Xpm | Xv | Webp
+type format = Ico | Cur | Bmp | Gif | Jpg | Lbm | Pcx | Png | Pnm | Tif | Xcf
+            | Xpm | Xv | Webp | Tga
 
 (** {1 Loading} *)
 
@@ -59,6 +59,9 @@ val save_png_rw : Tsdl.Sdl.surface -> Tsdl.Sdl.rw_ops -> bool -> int
 (** {1 Info} *)
 
 val is_format : format -> Tsdl.Sdl.rw_ops -> bool
-(** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_29.html#SEC29}IMG_is*} *)
+(** {{:https://www.libsdl.org/projects/SDL_image/docs/SDL_image_29.html#SEC29}IMG_is*}
+
+    Note that, uniquely, [is_format Tga] will throw an exception, as
+    SDL_image does not support testing if a file is in Targa format. *)
 
 end
