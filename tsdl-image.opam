@@ -8,11 +8,10 @@ bug-reports: "http://github.com/tokenrove/tsdl-image/issues"
 tags: [ "bindings" "graphics" ]
 license: "BSD-3-Clause"
 depends: [
-  "ocaml" {>= "4.02"}
+  "ocaml" {>= "4.08"}
   "ctypes" {>= "0.4.0"}
   "ctypes-foreign"
   "tsdl" {>= "0.9.0"}
-  "result"
   "dune" {build & >= "1.11.0"}
 ]
 depexts: [

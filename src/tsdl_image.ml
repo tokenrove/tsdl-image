@@ -1,7 +1,6 @@
 open Ctypes
 open Foreign
 open Tsdl
-open Result
 
 module Image = struct
 

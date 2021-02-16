@@ -1,3 +1,3 @@
 (lang dune 1.11)
-(name tsdl_image)
+(name tsdl-image)
 (explicit_js_mode)
