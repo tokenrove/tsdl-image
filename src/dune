@@ -2,5 +2,5 @@
   (name tsdl_image)
   (public_name tsdl-image)
   (modules tsdl_image)
-  (libraries ctypes tsdl result)
+  (libraries ctypes tsdl)
   (c_library_flags -lSDL2_image))
