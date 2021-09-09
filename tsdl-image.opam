@@ -13,7 +13,8 @@ bug-reports: "https://github.com/sanette/tsdl-image/issues"
 depends: [
   "dune" {>= "2.7"}
   "ocaml" {>= "4.03"}
-  "tsdl"
+  "tsdl" {>= "0.9.0"}
+  "conf-sdl2-image"
   "ctypes" {>= "0.4.0"}
   "ctypes-foreign"
   "odoc" {with-doc}
