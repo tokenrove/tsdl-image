@@ -1,4 +1,4 @@
-(lang dune 1.11)
+(lang dune 2.7)
 (version "0.3.0")
 (name tsdl-image)
 (generate_opam_files true)
@@ -18,3 +18,4 @@
   tsdl
   (ctypes (>= 0.4.0))
   ctypes-foreign))
+
