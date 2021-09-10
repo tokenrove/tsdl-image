@@ -24,6 +24,13 @@ module Init = struct
   let webp = i 8
 end
 
+(* This "hack" seems to be necessary for linux if you want to use
+   #require "tsdl-image"
+   in the toplevel, see
+   https://github.com/ocamllabs/ocaml-ctypes/issues/70 *)
+let foreign name typ =
+  foreign name typ ~from:Dl.(dlopen ~filename:"libSDL2_image-2.0.so"
+                               ~flags:[RTLD_NOW])
 let init =
   foreign "IMG_Init" (uint32_t @-> returning uint32_t)
 
