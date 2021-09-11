@@ -2,4 +2,6 @@
  (name test)
  (modules test)
  (libraries tsdl tsdl-image)
- (deps "what.png"))
+ (deps "what.png")
+ (modes exe)
+)
