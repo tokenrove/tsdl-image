@@ -20,14 +20,18 @@ Via [opam](https://opam.ocaml.org/):
 
 ## Documentation
 
-Documentation it
+Documentation is
 [here](https://sanette.github.io/tsdl-image/Image/index.html). It can
 be generated with `dune build @doc`, but the binding follows the
 SDL2_image interface closely, so it may be sufficient to consult
 [its documentation](https://www.libsdl.org/projects/SDL_image/docs/index.html).
+
+Starting from version 0.3, the library is usable in a toplevel (with
+`#require "tsdl-image"`).
 
 ## WARNING V0.3 Breaking change
 
 Starting from 0.3, the library name is the same as the opam package
 name `tsdl-image`. (The library name used to be `tsdl_image`, which
 was confusing).
+
